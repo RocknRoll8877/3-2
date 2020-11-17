@@ -1,0 +1,139 @@
+#include <iostream>
+
+using namespace std;
+
+class Boiler {
+private:
+    int heat;
+public:
+    Boiler(int heat) : heat(heat) {}
+
+    ~Boiler() {
+
+    }
+
+    int getHeat() const {
+        return heat;
+    }
+    void printInfo() {
+        cout << "Heat: " << this->getHeat() << endl;
+    }
+
+};
+
+class ETeapot : virtual public Boiler {
+private:
+    int power;
+public:
+    ETeapot(int heat, int power) : Boiler(heat), power(power) {}
+
+    ~ETeapot() {
+    }
+
+    int getPower() const {
+        return power;
+    }
+
+    void printInfo() {
+        cout << "Heat: " << this->getHeat() << "; power: " << this->getPower() << endl;
+    }
+
+};
+
+class Plate : virtual public Boiler {
+private:
+    int amountOfPlates;
+public:
+    Plate(int heat, int amountOfPlates) : Boiler(heat), amountOfPlates(amountOfPlates) {}
+
+    ~Plate() {
+
+    }
+
+    int getAmountOfPlates() const {
+        return amountOfPlates;
+    }
+
+    void printInfo() {
+        cout << "Heat: " << this->getHeat() << "; amount of plates: " << this->getAmountOfPlates() << endl;
+    }
+
+};
+
+class CoffeeMachine : public ETeapot {
+private:
+    int volume;
+public:
+    CoffeeMachine(int heat, int power, int volume) : ETeapot(heat, power), volume(volume), Boiler(heat) {}
+
+    ~CoffeeMachine() {
+
+    }
+
+    int getVolume() const {
+        return volume;
+    }
+
+    void printCoffeeMachine() {
+        cout << "Heat: " << this->getHeat() << "; power: " << this->getPower() << "; volume: " << this->getVolume() << endl;
+    }
+};
+
+class Microwave : public Plate {
+private:
+    int powerOfMicrowaves;
+public:
+    Microwave(int heat, int amountOfPlates, int powerOfMicrowaves) : Plate(heat, amountOfPlates),
+        powerOfMicrowaves(powerOfMicrowaves), Boiler(heat) {}
+
+    ~Microwave() {
+
+    }
+
+    int getPowerOfMicrowaves() const {
+        return powerOfMicrowaves;
+    }
+
+    void printMicrowave() {
+        cout << "Heat: " << this->Boiler::getHeat() << "; amount of plates: " << this->getAmountOfPlates() << "; power of microwaves: " <<
+            this->getPowerOfMicrowaves() << endl;
+    }
+
+};
+
+class FoodProcessor : public Microwave, public CoffeeMachine {
+private:
+    int amountOfFunctions;
+public:
+    FoodProcessor(int heat, int amountOfPlates, int powerOfMicrowaves, int heat1, int power, int volume,
+        int amountOfFunctions) : Microwave(heat, amountOfPlates, powerOfMicrowaves),
+        CoffeeMachine(heat1, power, volume), amountOfFunctions(amountOfFunctions), Boiler(heat) {}
+
+    ~FoodProcessor() {
+
+    }
+
+    int getAmountOfFunctions() const {
+        return amountOfFunctions;
+    }
+
+    void printInfo() {
+        cout << "Heat: " << this->getHeat() << "; amount of plates: " << this->getAmountOfPlates() << "; power of microwaves: " <<
+            this->getPowerOfMicrowaves() << "; power: " << this->getPower() << "; volume: " << this->getVolume() << "; amount of functions: " << this->getAmountOfFunctions() << endl;
+    }
+
+};
+
+int main() {
+    int heat, amountOfPlates, powerOfMicrowaves, power, volume, amountOfFunctions;
+    cin >> heat >> amountOfPlates >> powerOfMicrowaves >> power >> volume >> amountOfFunctions;
+    while (cin.fail()) {
+        cout << "WRONG!" << endl;
+        cin.clear();
+        cin.ignore(32767, '\n');
+        cin >> heat >> amountOfPlates >> powerOfMicrowaves >> power >> volume >> amountOfFunctions;
+    }
+    FoodProcessor LG(heat, amountOfPlates, powerOfMicrowaves, heat, power, volume, amountOfFunctions);
+    LG.printInfo();
+    return 0;
+}
